@@ -45,3 +45,4 @@ jobs:
         with:
           name: gobpmbank-test-results
           path: .run/
+          include-hidden-files: true

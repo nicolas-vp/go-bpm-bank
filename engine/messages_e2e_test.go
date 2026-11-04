@@ -10,12 +10,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	"github.com/nicolas-vp/go-bpm/engine"
-	"github.com/nicolas-vp/go-bpm/examples/demo/bpmgen"
-	"github.com/nicolas-vp/go-bpm/examples/demo/bpmgen/services"
-	"github.com/nicolas-vp/go-bpm/internal/pgtest"
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/engine"
+	"github.com/nicolas-vp/go-bpm-bank/internal/pgtest"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 // messageProcesses: paid ждёт сообщение payment по бизнес-ключу, shipped - сообщение shipment по переменной orderId
@@ -198,30 +196,3 @@ func TestMessageWithoutKey(t *testing.T) {
 }
 
 // TestDemoMessage - демо-процесс TestMessage: receive task ждёт оплату по бизнес-ключу
-func TestDemoMessage(t *testing.T) {
-	pool := pgtest.Pool(t)
-	ctx := context.Background()
-	log := slog.New(slog.DiscardHandler)
-	svc := &services.Services{}
-	processes := bpmgen.Processes(svc)
-	q := queue.New(pool, queue.Options{PollInterval: 50 * time.Millisecond, Logger: log})
-	e, err := engine.New(q, engine.Config{History: engine.HistoryConfig{ToDB: func() bool { return true }}, Logger: log}, processes, bpmgen.Queues(svc))
-	if err != nil {
-		t.Fatal(err)
-	}
-	q.Start(ctx)
-	defer q.Stop()
-	mt := &messageTest{t: t, pool: pool, e: e, reader: engine.NewHistoryReader(pool, processes, bpmgen.Decisions)}
-
-	id, err := e.StartProcess(ctx, "TestMessage", nil, engine.WithBusinessKey("order-7"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	mt.subscribed(id)
-	if n, err := e.CorrelateMessage(ctx, "paymentReceived", "order-7", map[string]any{"paid": true}); err != nil || n != 1 {
-		t.Fatalf("correlate: %d, %v", n, err)
-	}
-	if variables := mt.waitStatus(id, engine.InstanceCompleted); variables["paid"] != true {
-		t.Errorf("variables = %v", variables)
-	}
-}

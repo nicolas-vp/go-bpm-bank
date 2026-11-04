@@ -6,7 +6,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 const (

@@ -12,7 +12,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 // Статусы экземпляра процесса в bpm_process_instance.status

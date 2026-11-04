@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"maps"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
 )
 
 // Последовательный multi-instance (bpm.Loop). Номер выполнения хранится в токене (instanceMessage.Loops), поэтому

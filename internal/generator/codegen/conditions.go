@@ -10,9 +10,9 @@ import (
 	"text/template"
 	"unicode"
 
-	model "github.com/nicolas-vp/go-bpm/internal/generator/models"
-	"github.com/nicolas-vp/go-bpm/internal/generator/templates"
-	"github.com/nicolas-vp/go-bpm/internal/generator/utils"
+	model "github.com/nicolas-vp/go-bpm-bank/internal/generator/models"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/templates"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/utils"
 )
 
 // conditionFilePrefix - условия лежат в пакете процесса файлами cond_<id элемента>.go

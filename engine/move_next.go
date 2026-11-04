@@ -8,8 +8,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 // moveNext продвигает токен процесса. Все побочные эффекты (новые задачи, счётчики синхронизации)

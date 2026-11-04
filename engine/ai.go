@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
 )
 
 // AIRequest - запрос AI task к модели: промпты с подставленными переменными процесса

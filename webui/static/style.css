@@ -817,3 +817,6 @@ a.stat-tile:hover {
 .tooltip-label {
   color: #52514e;
 }
+
+/* Учебная оговорка видна в консоли и истории экземпляра. */
+.bank-educational{padding:9px 16px;background:#fff5da;color:#5d4a1b;font-size:13px;line-height:1.4;border-bottom:1px solid #e6ce8a;flex-shrink:0}.bank-educational a{color:inherit}

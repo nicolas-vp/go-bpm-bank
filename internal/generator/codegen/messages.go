@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	model "github.com/nicolas-vp/go-bpm/internal/generator/models"
-	"github.com/nicolas-vp/go-bpm/internal/generator/models/bpmn"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	model "github.com/nicolas-vp/go-bpm-bank/internal/generator/models"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/models/bpmn"
 )
 
 // messageSubscription - на какое сообщение подписывается элемент elementId: имя bpmn:message messageRef и ключ

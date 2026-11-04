@@ -11,8 +11,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 // Таймеры не держат воркер: это системные задачи очереди, отложенные через WithDelay. Они в базе,

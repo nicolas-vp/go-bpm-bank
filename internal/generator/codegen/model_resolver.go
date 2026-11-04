@@ -15,7 +15,7 @@ import (
 
 	"golang.org/x/tools/go/ast/astutil"
 
-	"github.com/nicolas-vp/go-bpm/internal/generator/utils"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/utils"
 )
 
 // Модель данных жёсткая: любая переменная, которую используют условия, скрипты и решения DMN,

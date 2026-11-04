@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
 )
 
 // loopDeployment: start -> work (цикл loop) -> after (service task) -> end; у work граничное событие ошибки failed -> end

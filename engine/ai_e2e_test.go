@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	"github.com/nicolas-vp/go-bpm/engine"
-	"github.com/nicolas-vp/go-bpm/internal/pgtest"
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/engine"
+	"github.com/nicolas-vp/go-bpm-bank/internal/pgtest"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 // aiProcesses: classify - AI task с ответом в category, отказ модели (bpm.Error с кодом ai_refusal от клиента) уводит токен в refused

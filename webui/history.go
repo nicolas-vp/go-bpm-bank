@@ -9,7 +9,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/nicolas-vp/go-bpm/engine"
+	"github.com/nicolas-vp/go-bpm-bank/engine"
 )
 
 // Страница истории /ui/history/?instanceId=<id>: диаграмма процесса (bpmn-js) с пройденными элементами экземпляра

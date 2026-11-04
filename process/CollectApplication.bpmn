@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:gobpm="https://github.com/nicolas-vp/go-bpm/schema/1.0" id="Definitions_CollectApplication" targetNamespace="https://github.com/nicolas-vp/go-bpm-bank">
+  <bpmn:process id="CollectApplication" name="01 · Приём и идентификация" isExecutable="true">
+    <bpmn:startEvent id="Start" name="" />
+    <bpmn:userTask id="IdentifyApplicant" name="Заполнить и проверить анкету">
+      <bpmn:extensionElements>
+        <gobpm:assignmentDefinition candidateGroups="operators" />
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:task id="ValidateApplication" name="Проверить возраст и гражданство" />
+    <bpmn:endEvent id="End" name="Анкета получена" />
+    <bpmn:boundaryEvent id="IntakeDeadline" name="Срок ожидания" attachedToRef="IdentifyApplicant">
+      <bpmn:timerEventDefinition>
+        <bpmn:timeDuration>PT5M</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:task id="ExpireApplication" name="Закрыть незаполненное заявление" />
+    <bpmn:endEvent id="Expired" name="Ожидание истекло" />
+    <bpmn:sequenceFlow id="Flow_1" name="" sourceRef="Start" targetRef="IdentifyApplicant" />
+    <bpmn:sequenceFlow id="Flow_2" name="" sourceRef="IdentifyApplicant" targetRef="ValidateApplication" />
+    <bpmn:sequenceFlow id="Flow_3" name="" sourceRef="ValidateApplication" targetRef="End" />
+    <bpmn:sequenceFlow id="Flow_4" name="" sourceRef="IntakeDeadline" targetRef="ExpireApplication" />
+    <bpmn:sequenceFlow id="Flow_5" name="" sourceRef="ExpireApplication" targetRef="Expired" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_CollectApplication">
+    <bpmndi:BPMNPlane id="Plane_CollectApplication" bpmnElement="CollectApplication">
+      <bpmndi:BPMNShape id="IdentifyApplicant_di" bpmnElement="IdentifyApplicant">
+        <dc:Bounds x="120" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ValidateApplication_di" bpmnElement="ValidateApplication">
+        <dc:Bounds x="360" y="150" width="160" height="85" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_di" bpmnElement="Start">
+        <dc:Bounds x="2" y="175" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_di" bpmnElement="End">
+        <dc:Bounds x="600" y="175" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="575" y="223" width="86" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ExpireApplication_di" bpmnElement="ExpireApplication">
+        <dc:Bounds x="360" y="297" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Expired_di" bpmnElement="Expired">
+        <dc:Bounds x="600" y="322" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="592" y="358" width="53" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="IntakeDeadline_di" bpmnElement="IntakeDeadline">
+        <dc:Bounds x="240" y="218" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="170" y="263" width="79" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="38" y="193" />
+        <di:waypoint x="120" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="280" y="192.5" />
+        <di:waypoint x="360" y="192.5" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="520" y="193" />
+        <di:waypoint x="600" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="258" y="254" />
+        <di:waypoint x="258" y="340" />
+        <di:waypoint x="360" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="520" y="340" />
+        <di:waypoint x="600" y="340" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

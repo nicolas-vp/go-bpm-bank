@@ -9,8 +9,8 @@ import (
 
 	"github.com/jackc/pgx/v5/pgconn"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 func TestResolveAssignment(t *testing.T) {

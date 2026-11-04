@@ -5,7 +5,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/nicolas-vp/go-bpm/internal/generator/models/bpmn"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/models/bpmn"
 )
 
 // ignoredElements - дочерние элементы процесса, которые не исполняются: документация, лейны, аннотации, данные

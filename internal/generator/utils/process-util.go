@@ -4,7 +4,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/nicolas-vp/go-bpm/internal/generator/models/bpmn"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/models/bpmn"
 )
 
 // ProcessDirName возвращает имя папки для сгенерированного кода процесса:

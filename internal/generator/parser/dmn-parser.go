@@ -3,7 +3,7 @@ package parser
 import (
 	"encoding/xml"
 
-	"github.com/nicolas-vp/go-bpm/internal/generator/models/dmn"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/models/dmn"
 )
 
 func ParseDmn(source []byte) (*dmn.Definitions, error) {

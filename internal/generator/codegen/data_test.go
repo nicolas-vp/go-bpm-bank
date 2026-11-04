@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/nicolas-vp/go-bpm/internal/generator/models/bpmn"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/models/bpmn"
 )
 
 func TestPrepareDataFiles(t *testing.T) {

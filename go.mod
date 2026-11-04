@@ -1,4 +1,4 @@
-module github.com/nicolas-vp/go-bpm
+module github.com/nicolas-vp/go-bpm-bank
 
 go 1.26.0
 

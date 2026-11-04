@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 type systemTask struct {

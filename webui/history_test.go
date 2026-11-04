@@ -10,7 +10,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/nicolas-vp/go-bpm/engine"
+	"github.com/nicolas-vp/go-bpm-bank/engine"
 )
 
 type fakeDiagrams struct {

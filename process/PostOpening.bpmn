@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:gobpm="https://github.com/nicolas-vp/go-bpm/schema/1.0" id="Definitions_PostOpening" targetNamespace="https://github.com/nicolas-vp/go-bpm-bank">
+  <bpmn:process id="PostOpening" name="05 · Постобработка открытого счёта" isExecutable="true">
+    <bpmn:startEvent id="Start" name="" />
+    <bpmn:serviceTask id="Archive" name="Сохранить досье">
+      <bpmn:extensionElements>
+        <gobpm:taskDefinition type="archiveDossier" retries="6" />
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="TaxReport" name="Сообщить ФНС (мок)">
+      <bpmn:extensionElements>
+        <gobpm:taskDefinition type="reportTax" retries="6" />
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Notify" name="Уведомить клиента (мок)">
+      <bpmn:extensionElements>
+        <gobpm:taskDefinition type="notifyApplicant" retries="6" />
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:task id="Finish" name="Завершить оформление" />
+    <bpmn:endEvent id="End" name="Готово" />
+    <bpmn:sequenceFlow id="Flow_1" name="" sourceRef="Start" targetRef="Archive" />
+    <bpmn:sequenceFlow id="Flow_2" name="" sourceRef="Archive" targetRef="TaxReport" />
+    <bpmn:sequenceFlow id="Flow_3" name="" sourceRef="TaxReport" targetRef="Notify" />
+    <bpmn:sequenceFlow id="Flow_4" name="" sourceRef="Notify" targetRef="Finish" />
+    <bpmn:sequenceFlow id="Flow_5" name="" sourceRef="Finish" targetRef="End" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_PostOpening">
+    <bpmndi:BPMNPlane id="Plane_PostOpening" bpmnElement="PostOpening">
+      <bpmndi:BPMNShape id="Archive_di" bpmnElement="Archive">
+        <dc:Bounds x="120" y="150" width="160" height="85" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TaxReport_di" bpmnElement="TaxReport">
+        <dc:Bounds x="350" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Notify_di" bpmnElement="Notify">
+        <dc:Bounds x="580" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Finish_di" bpmnElement="Finish">
+        <dc:Bounds x="810" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_di" bpmnElement="Start">
+        <dc:Bounds x="30" y="175" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_di" bpmnElement="End">
+        <dc:Bounds x="1040" y="175" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1041" y="211" width="34" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="66" y="193" />
+        <di:waypoint x="120" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="280" y="192.5" />
+        <di:waypoint x="350" y="192.5" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="510" y="192.5" />
+        <di:waypoint x="580" y="192.5" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="740" y="192.5" />
+        <di:waypoint x="810" y="192.5" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="970" y="193" />
+        <di:waypoint x="1040" y="193" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,116 +1,72 @@
-# go-bpm
+# GoBpmBank
 
-BPM-движок на PostgreSQL для Go-сервисов. Процессы рисуются в BPMN/DMN ([go-bpm modeler](https://github.com/nicolas-vp/go-bpm-modeler)
-с расширениями `gobpm:*` или Camunda Modeler с `zeebe:*`), генератор
-`go-bpm-gen` превращает их в типизированный Go-код, движок исполняет его на очереди задач в той же базе.
+**Тестовый процесс открытия счёта для небольшого банка.** Самостоятельный клон [go-bpm](https://github.com/nicolas-vp/go-bpm) со своим движком, генератором, API и веб-консолью. Базовые демопримеры и зависящие от них тесты удалены. В экземпляре зарегистрированы только восемь банковских процессов.
 
-Сайт: [go-bpm.tech](https://go-bpm.tech/)
+> **Только для учебных целей.** Пример не является банковским продуктом, юридической консультацией или готовым регламентом открытия счетов. Авторы не несут ответственности за решения, принятые на основе примера, и последствия его использования. Реальные счета не открываются, сведения государственным органам не отправляются. Используйте только вымышленные данные.
 
-- Каждый шаг процесса — задача очереди; все его эффекты пишутся в одной транзакции с её завершением.
-- Service task, задачи и скрипты, шлюзы (exclusive, parallel), подпроцессы и callActivity, таймеры (длительность и
-  дата), граничные события таймера и ошибки, последовательный multi-instance, ожидание сообщений с корреляцией,
-  решения DMN — сразу в Go, без интерпретатора выражений в рантайме.
-- AI task: запрос к модели из схемы, ответ — текстом или JSON в поле модели данных; модель подключает сервис, реализуя `engine.AIClient`.
-- Задачи пользователей как в Camunda 7: исполнитель, кандидаты-пользователи и группы, очередь, взять в работу и выполнить через API,
-  эскалация по сроку граничным таймером.
-- Экземпляры со статусом и бизнес-ключом, история в базе, консоль `/ui/`: процессы, запуск, поиск экземпляров, задачи
-  и история экземпляра с диаграммой bpmn-js и сработавшими правилами DMN.
-- Метрики Prometheus (пакет `metrics`), хуки для трассировки OpenTelemetry, очистка истории по сроку хранения.
-- Зависимости: `pgx/v5`, `google/uuid`, `golang.org/x/tools` (генератор), `prometheus/client_golang` (только пакет `metrics`).
+![GoBpmBank — учебный стенд](docs/images/01-home.png)
+
+## Введение
+
+Новый совершеннолетний гражданин РФ лично обращается за текущим рублёвым счётом для личных нужд. Сотрудник заполняет анкету, процессы выполняют автоматические проверки, DMN выбирает маршрут. При необходимости заявление рассматривают финансовый мониторинг и руководитель. После учебного подтверждения подписания договора отдельная мок-АБС регистрирует счёт; затем выполняются досье, сообщение ФНС и уведомление — тоже моки.
+
+Мы показываем не набор несвязанных BPMN-элементов, а полный сценарий: возврат за сведениями, несколько ролей, параллельные проверки, дочерние экземпляры, таймеры, юридически различимые исходы и повтор вызова внешнего сервиса без дублирования счёта.
 
 ## Документация
 
-| | |
-|---|---|
-| [Быстрый старт](docs/quickstart.md) | демо за пять минут и свой сервис с нуля |
-| [Принципы работы](docs/concepts.md) | BPMN и DMN, токен, шаги и транзакции, повторы, переменные |
-| [Моделирование BPMN](docs/bpmn.md) | поддерживаемые элементы, настройки в Camunda Modeler, ограничения |
-| [Решения DMN](docs/dmn.md) | таблицы решений, ячейки, hit policy, история правил |
-| [Генератор кода](docs/generator.md) | запуск, раскладка, модель данных, методы и обработчики |
-| [Разбор примеров](docs/examples.md) | все процессы демо: BPMN, код, запуск, эксперименты |
-| [Запуск и эксплуатация](docs/running.md) | настройки, таблицы, масштабирование, мониторинг, упавшие экземпляры |
-| [HTTP API и консоль](docs/api.md) | процессы, экземпляры, задачи пользователей, консоль `/ui/` |
+1. [Этапы проектирования и архитектура](docs/design.md).
+2. [Подпроцессы и переменные](docs/processes.md).
+3. [Законодательная основа и границы примера](docs/legal.md).
+4. [Запуск и прохождение пользовательских задач](docs/walkthrough.md).
+5. [Мок-АБС, идемпотентность и сбои](docs/integrations.md).
+6. [Проверки, результаты и скриншоты](docs/verification.md).
 
-## Встроить в сервис
+## Быстрый запуск
+
+Нужны Docker с Compose v2; для локальной сборки — Go 1.26+. Вариант с готовым PostgreSQL описан в [инструкции](docs/walkthrough.md).
 
 ```sh
-go get github.com/nicolas-vp/go-bpm
-go get -tool github.com/nicolas-vp/go-bpm/cmd/go-bpm-gen
+cp .env.example .env
+# Задайте собственный пароль POSTGRES_PASSWORD в .env.
+docker compose up -d --build
 ```
 
-BPMN и DMN кладутся в `process/` в корне модуля, генерация — в `internal/bpmgen`:
+- Учебный стенд: http://localhost:8090/
+- Консоль: http://localhost:8090/ui/
+- Мок-АБС: http://localhost:8091/healthz
 
-```go
-// internal/gen/generate.go
-package gen
+Базы `bank` и `bank_core` отдельные; данные сохраняются в собственном томе `gobpmbank_bankdata`. Команды не подключаются к существующему демо go-bpm. Порты опубликованы только на localhost.
 
-//go:generate go tool go-bpm-gen
-```
+### Начать заявление
 
-```go
-pool, _ := pgxpool.New(ctx, dsn)
-_ = migrations.Up(ctx, pool)
-
-svc := &services.Services{} // ваши внешние сервисы для методов и обработчиков
-q := queue.New(pool, queue.Options{})
-on := func() bool { return true }
-e, _ := engine.New(q, engine.Config{
-	History:      engine.HistoryConfig{ToDB: on}, // экземпляры и история в базе
-	RulesHistory: engine.HistoryConfig{ToDB: on}, // сработавшие правила DMN
-}, bpmgen.Processes(svc), bpmgen.Queues(svc))
-history := engine.NewHistoryReader(pool, bpmgen.Processes(svc), bpmgen.Decisions)
-
-mux := http.NewServeMux()
-httpapi.Register(mux, e, history)                                // /api/v1/processes, /api/v1/instances
-httpapi.RegisterUserTasks(mux, engine.NewUserTaskService(pool, e)) // /api/v1/tasks
-webui.Register(mux, history)                                     // /ui/ - консоль, /ui/history/?instanceId=<id> - история
-
-q.Start(ctx)
-defer q.Stop()
-```
-
-Рукописные части — модель данных `internal/bpmgen/model`, сервисы `internal/bpmgen/services`, обработчики
-service task `internal/bpmgen/handlers` и методы задач `method_<id>.go`. Генератор создаёт для них заглушки и
-никогда не перезаписывает. Пошагово — [Быстрый старт](docs/quickstart.md#свой-сервис-с-нуля); решения и
-договорённости разработчиков движка — [docs/context.md](docs/context.md).
-
-## Демо
-
-В Docker, с PostgreSQL ([подробнее](docs/running.md#docker)):
+Откройте вкладку «Запуск» в консоли, выберите учебный сценарий и нажмите «Запустить». ID заявления можно оставить пустым: будет создан UUID. Альтернатива через API:
 
 ```sh
-cp .env.example .env    # задайте POSTGRES_PASSWORD
-docker compose up -d    # консоль http://localhost:8080/ui/
+curl -X POST http://localhost:8090/bank/api/applications \
+  -H 'Content-Type: application/json' \
+  -d '{"applicationId":"9d98cf8e-a182-4b29-adb5-f8e2bd91a721","scenario":"happy"}'
 ```
 
-Из исходников:
+Одинаковые ID и команда возвращают тот же экземпляр. Пользовательские задачи выполняются через стандартную консоль go-bpm: взять задачу и заполнить переменные. **Отдельных форм и formKey нет.** Учебные пользователи: `operator`, `aml`, `chief`. Группы определяются сервером.
+
+## Сборка и проверки
 
 ```sh
-createdb go_bpm
-make run    # examples/demo, консоль http://localhost:8080/ui/
-curl -XPOST localhost:8080/api/v1/processes/TestDecision/instances -d '{"variables":{"a":"some","b":"x"}}'
-open "http://localhost:8080/ui/history/?instanceId=<id>"
+make generate   # локальный генератор этого репозитория; исходники BPMN/DMN в process/
+make build
+make test
+make vet
+make e2e        # запущенные bank и mock на localhost:8090/8091; Python 3, без зависимостей
 ```
 
-## Разработка
+Сквозные тесты добавляют только учебные заявления и не очищают базы. Независимые интеграционные тесты движка используют `GO_BPM_TEST_DSN` и **очищают указанную тестовую базу**; не направляйте их в `bank` или любую рабочую БД. Без переменной они пропускаются. Тест мок-АБС с PostgreSQL включается через `MOCK_TEST_DSN`.
 
-```sh
-make generate   # перегенерировать examples/demo из BPMN
-make test       # с Postgres из GO_BPM_TEST_DSN (база очищается!), по умолчанию localhost/go_bpm_test
-make test-unit  # без базы
-make lint
-```
+## На чём основан пример
 
-| Каталог | Что там |
-|---|---|
-| `bpm/` | контракт между генератором, сгенерированным кодом и движком |
-| `engine/` | движок |
-| `queue/` | очередь задач на PostgreSQL |
-| `migrations/` | схема БД |
-| `httpapi/`, `webui/` | JSON API и консоль с историей экземпляров |
-| `cmd/go-bpm-gen/`, `internal/generator/` | генератор |
-| `examples/demo/` | демо-сервис |
+[Документация go-bpm](https://go-bpm.tech/docs/): [BPMN](https://go-bpm.tech/docs/bpmn/), [DMN](https://go-bpm.tech/docs/dmn/), [генератор](https://go-bpm.tech/docs/generator/), [HTTP API и задачи](https://go-bpm.tech/docs/api/), [эксплуатация](https://go-bpm.tech/docs/running/).
 
-## Лицензия
+В качестве предметного ориентира небольшого банка рассматривается [RS-Bank v.5.5 от R-Style Softlab](https://www.softlab.ru/products/rs-bank/). Наша мок-АБС использует собственный учебный REST-контракт: это не реальная интеграция с RS-Bank, не имитация его протокола и не заявление о партнёрстве с поставщиком. Доказанного актуального рейтинга «самая популярная АБС небольших банков» мы не приводим.
 
-[Apache License 2.0](LICENSE).
+Нормативные источники: 204-И, 115-ФЗ, 499-П, 860-П, ГК РФ, НК РФ и 152-ФЗ — со ссылками и оговорками в [законодательном разборе](docs/legal.md).
+
+Исходная версия движка: `73e9a5a25c1606f95bbdff667a20169fcd419505`. Импорты переведены на `github.com/nicolas-vp/go-bpm-bank`; пространство имён BPMN `gobpm` сохранено для совместимости с моделлером. Соседний checkout движка для сборки не требуется. Apache-2.0, см. [LICENSE](LICENSE) и [NOTICE](NOTICE).

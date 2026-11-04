@@ -7,17 +7,14 @@ import (
 	"fmt"
 	"log/slog"
 	"slices"
-	"strings"
 	"testing"
 	"time"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	"github.com/nicolas-vp/go-bpm/examples/demo/bpmgen"
-	"github.com/nicolas-vp/go-bpm/examples/demo/bpmgen/services"
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 type fakeQueue struct {
@@ -122,8 +119,6 @@ func (tx *fakeSyncTx) Exec(_ context.Context, _ string, args ...any) (pgconn.Com
 	return pgconn.CommandTag{}, nil
 }
 
-// generatedProcesses - процессы из сгенерированного кода с пустыми сервисами
-var generatedProcesses = bpmgen.Processes(&services.Services{})
 
 func newTestService(t *testing.T, deployment map[string]bpm.DeploymentProcess, queues []bpm.Queue) (*Engine, *fakeQueue) {
 	t.Helper()
@@ -180,18 +175,6 @@ func completeTaskWith(t *testing.T, s *Engine, q *fakeQueue, tx queue.Tx, wantTy
 	return &message
 }
 
-// TestGeneratedProcesses проверяет, что движок принимает все сгенерированные процессы
-func TestGeneratedProcesses(t *testing.T) {
-	s, _ := newTestServiceFromProcesses(t, generatedProcesses, bpmgen.Queues(&services.Services{}))
-	for id, process := range generatedProcesses {
-		if _, ok := s.deployment[id]; !ok {
-			t.Errorf("process %q: deployment not found", id)
-		}
-		if !strings.Contains(process.BPMN, `id="`+id+`"`) {
-			t.Errorf("process %q: BPMN must contain the process, got %.80q", id, process.BPMN)
-		}
-	}
-}
 
 // amountCondition - как сгенерированное условие на модели данных: amount > 100 -> sub, иначе default end.
 // Переменные приходят из JSON очереди, поэтому amount там float64
@@ -320,9 +303,9 @@ func TestDataMethod(t *testing.T) {
 		A int `json:"a"`
 		B int `json:"b"`
 	}
-	svc := &services.Services{}
-	var gotServices *services.Services
-	double := bpm.Method(svc, func(ctx context.Context, svc *services.Services, d *data) error {
+	svc := &struct{}{}
+	var gotServices *struct{}
+	double := bpm.Method(svc, func(ctx context.Context, svc *struct{}, d *data) error {
 		gotServices = svc
 		d.B = d.A * 2
 		return nil
@@ -484,18 +467,5 @@ func TestHandlers(t *testing.T) {
 	}
 	if err := runHandler(ctx, nil, "payment.charge", &message, false); err == nil {
 		t.Fatal("missing handler must fail the task")
-	}
-}
-
-func TestGeneratedQueuesHaveHandlers(t *testing.T) {
-	if _, err := New(&fakeQueue{}, Config{}, generatedProcesses, bpmgen.Queues(&services.Services{})); err != nil {
-		t.Fatal(err)
-	}
-	aiTypes := aiTaskTypes(generatedProcesses["TestAiTask"].Flows)
-	for _, queue := range bpmgen.Queues(&services.Services{}) {
-		// AI task выполняет движок, обработчика у её jobType нет
-		if queue.Handler == nil && !aiTypes[queue.TypeID] {
-			t.Errorf("task type %q: generated queue has no handler", queue.TypeID)
-		}
 	}
 }

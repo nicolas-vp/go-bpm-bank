@@ -12,10 +12,10 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/nicolas-vp/go-bpm/internal/generator/models/bpmn"
-	"github.com/nicolas-vp/go-bpm/internal/generator/models/dmn"
-	"github.com/nicolas-vp/go-bpm/internal/generator/templates"
-	"github.com/nicolas-vp/go-bpm/internal/generator/utils"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/models/bpmn"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/models/dmn"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/templates"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/utils"
 )
 
 // Решение DMN переводится в Go-функцию пакета процесса на модели данных: входы таблицы - поля DataModel

@@ -6,7 +6,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
 )
 
 // ProcessDefinition - процесс, который можно запустить: корневой процесс из Processes сгенерированного кода

@@ -7,13 +7,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/nicolas-vp/go-bpm/internal/generator/codegen"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/codegen"
 
-	"github.com/nicolas-vp/go-bpm/internal/generator/file"
-	"github.com/nicolas-vp/go-bpm/internal/generator/models/bpmn"
-	"github.com/nicolas-vp/go-bpm/internal/generator/models/dmn"
-	"github.com/nicolas-vp/go-bpm/internal/generator/parser"
-	"github.com/nicolas-vp/go-bpm/internal/generator/utils"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/file"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/models/bpmn"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/models/dmn"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/parser"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/utils"
 )
 
 // Пути по умолчанию считаются от корня модуля (папки с go.mod), а не от текущей папки,

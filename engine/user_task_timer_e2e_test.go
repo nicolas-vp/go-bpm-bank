@@ -11,10 +11,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	"github.com/nicolas-vp/go-bpm/engine"
-	"github.com/nicolas-vp/go-bpm/internal/pgtest"
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/engine"
+	"github.com/nicolas-vp/go-bpm-bank/internal/pgtest"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 // escalationProcess: start -> approve (задача пользователя, граничный таймер timer) -> approved;

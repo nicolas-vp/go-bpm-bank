@@ -6,8 +6,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 // TestHooks: start -> work (service task) -> check (метод) -> end. WrapCall видит обработчик и метод с попыткой задачи,

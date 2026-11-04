@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	model "github.com/nicolas-vp/go-bpm/internal/generator/models"
-	"github.com/nicolas-vp/go-bpm/internal/generator/models/bpmn"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	model "github.com/nicolas-vp/go-bpm-bank/internal/generator/models"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/models/bpmn"
 )
 
 const eventsDefinitions = `<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"

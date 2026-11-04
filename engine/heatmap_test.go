@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
 )
 
 func TestHeatmapBuilder(t *testing.T) {

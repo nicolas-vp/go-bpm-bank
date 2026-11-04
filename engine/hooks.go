@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 // Hooks - точки подключения сервиса к движку: трассировка (OpenTelemetry), логи, свои метрики и уведомления.

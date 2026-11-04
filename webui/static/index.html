@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Консоль go-bpm</title>
+  <title>Консоль GoBpmBank</title>
   <link rel="stylesheet" href="/ui/static/vendor/bpmn-js-18.31.0/diagram-js.css">
   <link rel="stylesheet" href="/ui/static/vendor/bpmn-js-18.31.0/bpmn-js.css">
   <link rel="stylesheet" href="/ui/static/style.css">
 </head>
 <body>
   <header class="bar">
-    <h1>go-bpm</h1>
+    <h1><a href="/" style="color:inherit;text-decoration:none">GoBpmBank</a></h1>
     <nav class="tabs" aria-label="Разделы">
       <a href="/ui/#/processes" data-tab="processes">Процессы</a>
       <a href="/ui/#/start" data-tab="start">Запуск</a>
@@ -20,6 +20,7 @@
       <a href="/ui/#/stats" data-tab="stats">Динамика</a>
     </nav>
   </header>
+  <aside class="bank-educational">Только учебный пример. Авторы не несут ответственности за решения и последствия использования. <a href="/">О проекте</a></aside>
 
   <div id="error" class="error" role="alert" hidden></div>
 
@@ -63,12 +64,12 @@
           <select id="start-process" required></select>
         </label>
         <label class="field">
-          <span>Бизнес-ключ <span class="muted">необязательно</span></span>
-          <input id="start-key" type="text" autocomplete="off" placeholder="например, order-42">
+          <span>ID заявления <span class="muted">UUID; пусто — создать новый</span></span>
+          <input id="start-key" type="text" autocomplete="off" placeholder="UUID заявления">
         </label>
         <fieldset class="field">
-          <legend>Переменные</legend>
-          <div id="start-vars"></div>
+          <legend>Учебный сценарий</legend>
+          <select id="start-scenario"><option value="happy">Обычный путь</option><option value="incomplete">Неполная анкета</option><option value="screening_match">Совпадение по перечню</option><option value="pep">Публичное должностное лицо</option><option value="tax_refusal">Налоговые сведения не представлены</option><option value="withdrawn">Отказ клиента</option><option value="lost_response">Потерян ответ АБС</option><option value="core_pending">Отложенное открытие</option><option value="core_reject">Отклонение команды АБС</option><option value="tax_report_retry">Повтор сообщения ФНС</option></select>
         </fieldset>
         <div class="actions">
           <button class="button" type="submit">Запустить</button>

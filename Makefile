@@ -1,35 +1,28 @@
-# Тестовая база очищается тестами, не направляйте её на рабочую
-GO_BPM_TEST_DSN ?= postgres://postgres:postgres@localhost:5432/go_bpm_test?sslmode=disable
-GO_BPM_DSN ?= postgres://postgres:postgres@localhost:5432/go_bpm?sslmode=disable
-
-.PHONY: build test test-unit generate run lint vulncheck docker
+.PHONY: build generate design test vet e2e up down
 
 build:
-	go build ./...
+	mkdir -p bin
+	go build -o bin/gobpmbank ./cmd/gobpmbank
+	go build -o bin/mock-core-banking ./cmd/mock-core-banking
 
-# тесты с базой делят таблицы, поэтому пакеты гоняются по одному (-p 1)
-test:
-	GO_BPM_TEST_DSN="$(GO_BPM_TEST_DSN)" go test -race -count=1 -p 1 ./...
-
-# без базы: интеграционные тесты пропускаются
-test-unit:
-	go test -race -count=1 ./...
-
-# перегенерировать демо-процессы из examples/demo/process
 generate:
-	go generate ./examples/demo
+	go generate .
 
-run:
-	GO_BPM_DSN="$(GO_BPM_DSN)" go run ./examples/demo/cmd/demo
+# Пересоздаёт исходную раскладку BPMN/DMN; ручные изменения моделера будут заменены.
+design:
+	python3 scripts/design.py
 
-lint:
+test:
+	go test ./...
+
+vet:
 	go vet ./...
-	test -z "$$(gofmt -l .)"
 
-# известные уязвимости в вызываемом коде модулей и стандартной библиотеки установленного Go
-vulncheck:
-	go run golang.org/x/vuln/cmd/govulncheck@v1.9.0 ./...
+e2e:
+	python3 scripts/e2e.py
 
-# образ демо-сервиса, как его собирает CI (ghcr.io/nicolas-vp/go-bpm)
-docker:
-	docker build -t go-bpm .
+up:
+	docker compose up -d --build
+
+down:
+	docker compose down

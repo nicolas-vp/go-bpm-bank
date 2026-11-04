@@ -12,9 +12,9 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	dto "github.com/prometheus/client_model/go"
 
-	"github.com/nicolas-vp/go-bpm/internal/pgtest"
-	"github.com/nicolas-vp/go-bpm/metrics"
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/internal/pgtest"
+	"github.com/nicolas-vp/go-bpm-bank/metrics"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 // gather собирает метрики коллектора строками "<имя>{<метки>} <значение>"; у гистограммы значение - число наблюдений

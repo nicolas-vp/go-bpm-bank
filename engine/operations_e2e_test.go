@@ -9,10 +9,10 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	"github.com/nicolas-vp/go-bpm/engine"
-	"github.com/nicolas-vp/go-bpm/internal/pgtest"
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/engine"
+	"github.com/nicolas-vp/go-bpm-bank/internal/pgtest"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 // operationsProcesses: main вызывает callActivity child, в child после таймера метод check падает, пока в переменных

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:gobpm="https://github.com/nicolas-vp/go-bpm/schema/1.0" id="Definitions_ConcludeContract" targetNamespace="https://github.com/nicolas-vp/go-bpm-bank">
+  <bpmn:process id="ConcludeContract" name="03 · Заключение договора" isExecutable="true">
+    <bpmn:startEvent id="Start" name="" />
+    <bpmn:serviceTask id="Prepare" name="Подготовить договор">
+      <bpmn:extensionElements>
+        <gobpm:taskDefinition type="prepareContract" retries="6" />
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="ConfirmContract" name="Подтвердить подписание / отказ">
+      <bpmn:extensionElements>
+        <gobpm:assignmentDefinition candidateGroups="operators" />
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:task id="RecordConsent" name="Обработать результат подписания" />
+    <bpmn:endEvent id="End" name="" />
+    <bpmn:sequenceFlow id="Flow_1" name="" sourceRef="Start" targetRef="Prepare" />
+    <bpmn:sequenceFlow id="Flow_2" name="" sourceRef="Prepare" targetRef="ConfirmContract" />
+    <bpmn:sequenceFlow id="Flow_3" name="" sourceRef="ConfirmContract" targetRef="RecordConsent" />
+    <bpmn:sequenceFlow id="Flow_4" name="" sourceRef="RecordConsent" targetRef="End" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_ConcludeContract">
+    <bpmndi:BPMNPlane id="Plane_ConcludeContract" bpmnElement="ConcludeContract">
+      <bpmndi:BPMNShape id="Prepare_di" bpmnElement="Prepare">
+        <dc:Bounds x="120" y="150" width="160" height="85" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ConfirmContract_di" bpmnElement="ConfirmContract">
+        <dc:Bounds x="360" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="RecordConsent_di" bpmnElement="RecordConsent">
+        <dc:Bounds x="600" y="150" width="160" height="85" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_di" bpmnElement="Start">
+        <dc:Bounds x="22" y="175" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_di" bpmnElement="End">
+        <dc:Bounds x="822" y="175" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="58" y="193" />
+        <di:waypoint x="120" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="280" y="192.5" />
+        <di:waypoint x="360" y="192.5" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="520" y="192.5" />
+        <di:waypoint x="600" y="192.5" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="760" y="193" />
+        <di:waypoint x="822" y="193" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

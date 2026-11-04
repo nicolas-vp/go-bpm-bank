@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/nicolas-vp/go-bpm/engine"
+	"github.com/nicolas-vp/go-bpm-bank/engine"
 )
 
 // MessageCorrelator - передача сообщений ждущим токенам; *engine.Engine подходит

@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/nicolas-vp/go-bpm/engine"
+	"github.com/nicolas-vp/go-bpm-bank/engine"
 )
 
 // fakeCorrelator: сообщение payment ждёт один токен по ключу order-1

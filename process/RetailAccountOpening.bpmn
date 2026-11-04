@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:gobpm="https://github.com/nicolas-vp/go-bpm/schema/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_RetailAccountOpening" targetNamespace="https://github.com/nicolas-vp/go-bpm-bank">
+  <bpmn:process id="RetailAccountOpening" name="GoBpmBank · Открытие счёта" isExecutable="true">
+    <bpmn:startEvent id="Start" name="Заявление" />
+    <bpmn:callActivity id="Intake" name="01 · Приём заявления">
+      <bpmn:extensionElements>
+        <gobpm:calledElement processId="CollectApplication" />
+      </bpmn:extensionElements>
+    </bpmn:callActivity>
+    <bpmn:exclusiveGateway id="Eligible" name="Успешно ли прошел приём ?" default="Flow_4" />
+    <bpmn:callActivity id="Diligence" name="02 · Проверки и рассмотрение">
+      <bpmn:extensionElements>
+        <gobpm:calledElement processId="DueDiligence" />
+      </bpmn:extensionElements>
+    </bpmn:callActivity>
+    <bpmn:exclusiveGateway id="Approved" name="Можно продолжить?" default="Flow_7" />
+    <bpmn:callActivity id="Contract" name="03 · Договор">
+      <bpmn:extensionElements>
+        <gobpm:calledElement processId="ConcludeContract" />
+      </bpmn:extensionElements>
+    </bpmn:callActivity>
+    <bpmn:exclusiveGateway id="Signed" name="Подписан?" default="Flow_10" />
+    <bpmn:callActivity id="Open" name="04 · Открытие в АБС">
+      <bpmn:extensionElements>
+        <gobpm:calledElement processId="OpenCoreAccount" />
+      </bpmn:extensionElements>
+    </bpmn:callActivity>
+    <bpmn:exclusiveGateway id="Opened" name="Зарегистрирован?" default="Flow_13" />
+    <bpmn:callActivity id="Post" name="05 · Постобработка">
+      <bpmn:extensionElements>
+        <gobpm:calledElement processId="PostOpening" />
+      </bpmn:extensionElements>
+    </bpmn:callActivity>
+    <bpmn:endEvent id="Success" name="Счёт открыт" />
+    <bpmn:endEvent id="Stopped" name="Заявление завершено" />
+    <bpmn:sequenceFlow id="Flow_1" name="" sourceRef="Start" targetRef="Intake" />
+    <bpmn:sequenceFlow id="Flow_2" name="" sourceRef="Intake" targetRef="Eligible" />
+    <bpmn:sequenceFlow id="Flow_3" name="Да" sourceRef="Eligible" targetRef="Diligence">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">outcome == "CONTINUE"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_4" name="Другой исход" sourceRef="Eligible" targetRef="Stopped" />
+    <bpmn:sequenceFlow id="Flow_5" name="" sourceRef="Diligence" targetRef="Approved" />
+    <bpmn:sequenceFlow id="Flow_6" name="Да" sourceRef="Approved" targetRef="Contract">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">outcome == "CONTINUE"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_7" name="Другой исход" sourceRef="Approved" targetRef="Stopped" />
+    <bpmn:sequenceFlow id="Flow_8" name="" sourceRef="Contract" targetRef="Signed" />
+    <bpmn:sequenceFlow id="Flow_9" name="Да" sourceRef="Signed" targetRef="Open">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">contractAccepted</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_10" name="Клиент отказался" sourceRef="Signed" targetRef="Stopped" />
+    <bpmn:sequenceFlow id="Flow_11" name="" sourceRef="Open" targetRef="Opened" />
+    <bpmn:sequenceFlow id="Flow_12" name="Да" sourceRef="Opened" targetRef="Post">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">accountOpened</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_13" name="Требует разбирательства" sourceRef="Opened" targetRef="Stopped" />
+    <bpmn:sequenceFlow id="Flow_14" name="" sourceRef="Post" targetRef="Success" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_RetailAccountOpening">
+    <bpmndi:BPMNPlane id="Plane_RetailAccountOpening" bpmnElement="RetailAccountOpening">
+      <bpmndi:BPMNShape id="Diligence_di" bpmnElement="Diligence" isExpanded="false">
+        <dc:Bounds x="420" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Contract_di" bpmnElement="Contract" isExpanded="false">
+        <dc:Bounds x="740" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Open_di" bpmnElement="Open" isExpanded="false">
+        <dc:Bounds x="1060" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Post_di" bpmnElement="Post" isExpanded="false">
+        <dc:Bounds x="1380" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Eligible_di" bpmnElement="Eligible" isMarkerVisible="true">
+        <dc:Bounds x="325" y="168" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="308" y="130.5" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Approved_di" bpmnElement="Approved" isMarkerVisible="true">
+        <dc:Bounds x="620" y="168" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="611" y="130.5" width="68" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Signed_di" bpmnElement="Signed" isMarkerVisible="true">
+        <dc:Bounds x="955" y="168" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="951" y="144" width="57" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Opened_di" bpmnElement="Opened" isMarkerVisible="true">
+        <dc:Bounds x="1265" y="168" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1248" y="130.5" width="83" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Success_di" bpmnElement="Success">
+        <dc:Bounds x="1600" y="175" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1587" y="211" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Stopped_di" bpmnElement="Stopped">
+        <dc:Bounds x="1600" y="410" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1645.5" y="414.5" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Intake_di" bpmnElement="Intake" isExpanded="false">
+        <dc:Bounds x="140" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_di" bpmnElement="Start">
+        <dc:Bounds x="62" y="175" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="52" y="211" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="98" y="193" />
+        <di:waypoint x="140" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="300" y="193" />
+        <di:waypoint x="325" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="375" y="193" />
+        <di:waypoint x="420" y="193" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="387" y="169" width="14" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="350" y="218" />
+        <di:waypoint x="350" y="428" />
+        <di:waypoint x="1600" y="428" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="331" y="313" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="580" y="193" />
+        <di:waypoint x="620" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="670" y="193" />
+        <di:waypoint x="740" y="193" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="695" y="169" width="14" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="645" y="218" />
+        <di:waypoint x="645" y="400" />
+        <di:waypoint x="1580" y="400" />
+        <di:waypoint x="1604" y="417" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="626" y="299" width="68" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="900" y="193" />
+        <di:waypoint x="955" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="1005" y="193" />
+        <di:waypoint x="1060" y="193" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1022" y="169" width="14" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="980" y="218" />
+        <di:waypoint x="980" y="370" />
+        <di:waypoint x="1590" y="370" />
+        <di:waypoint x="1610" y="412" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1256" y="345" width="51" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
+        <di:waypoint x="1220" y="193" />
+        <di:waypoint x="1265" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12">
+        <di:waypoint x="1315" y="193" />
+        <di:waypoint x="1380" y="193" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1336" y="169" width="14" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13_di" bpmnElement="Flow_13">
+        <di:waypoint x="1290" y="218" />
+        <di:waypoint x="1290" y="310" />
+        <di:waypoint x="1618" y="310" />
+        <di:waypoint x="1618" y="410" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1416" y="276" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14_di" bpmnElement="Flow_14">
+        <di:waypoint x="1540" y="193" />
+        <di:waypoint x="1600" y="193" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

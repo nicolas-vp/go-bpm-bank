@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
 )
 
 // runCondition вызывает сгенерированное условие элемента и возвращает id следующего элемента

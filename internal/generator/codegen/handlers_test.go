@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	model "github.com/nicolas-vp/go-bpm/internal/generator/models"
+	model "github.com/nicolas-vp/go-bpm-bank/internal/generator/models"
 )
 
 func TestMergeQueues(t *testing.T) {

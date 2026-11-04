@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
 )
 
 func TestRenderPrompt(t *testing.T) {

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:gobpm="https://github.com/nicolas-vp/go-bpm/schema/1.0" id="Definitions_AutomatedChecks" targetNamespace="https://github.com/nicolas-vp/go-bpm-bank">
+  <bpmn:process id="AutomatedChecks" name="02a · Автоматические проверки" isExecutable="true">
+    <bpmn:startEvent id="Start" name="" />
+    <bpmn:parallelGateway id="Fork" name="Проверить параллельно">
+      <bpmn:outgoing>Flow_1o2xxw5</bpmn:outgoing>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:serviceTask id="Document" name="Проверить документ Клиента">
+      <bpmn:extensionElements>
+        <gobpm:taskDefinition type="checkDocument" retries="6" />
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Screening" name="Перечни / ПДЛ">
+      <bpmn:extensionElements>
+        <gobpm:taskDefinition type="checkScreening" retries="6" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1o2xxw5</bpmn:incoming>
+      <bpmn:outgoing>Flow_11tgevd</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Tax" name="Налоговые сведения">
+      <bpmn:extensionElements>
+        <gobpm:taskDefinition type="checkTax" retries="6" />
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:parallelGateway id="Join" name="Собрать результаты">
+      <bpmn:incoming>Flow_11tgevd</bpmn:incoming>
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_0k86g1i</bpmn:outgoing>
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+    </bpmn:parallelGateway>
+    <bpmn:endEvent id="End" name="Результаты собраны">
+      <bpmn:incoming>Flow_0k86g1i</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1" name="" sourceRef="Start" targetRef="Fork" />
+    <bpmn:sequenceFlow id="Flow_2" name="" sourceRef="Fork" targetRef="Document" />
+    <bpmn:sequenceFlow id="Flow_4" name="" sourceRef="Fork" targetRef="Tax" />
+    <bpmn:sequenceFlow id="Flow_5" name="" sourceRef="Document" targetRef="Join" />
+    <bpmn:sequenceFlow id="Flow_7" name="" sourceRef="Tax" targetRef="Join" />
+    <bpmn:sequenceFlow id="Flow_11tgevd" sourceRef="Screening" targetRef="Join" />
+    <bpmn:sequenceFlow id="Flow_1o2xxw5" sourceRef="Fork" targetRef="Screening" />
+    <bpmn:sequenceFlow id="Flow_0k86g1i" sourceRef="Join" targetRef="End" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_AutomatedChecks">
+    <bpmndi:BPMNPlane id="Plane_AutomatedChecks" bpmnElement="AutomatedChecks">
+      <bpmndi:BPMNShape id="Document_di" bpmnElement="Document">
+        <dc:Bounds x="270" y="80" width="160" height="85" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Fork_di" bpmnElement="Fork">
+        <dc:Bounds x="120" y="240" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="16" y="236" width="68" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Join_di" bpmnElement="Join">
+        <dc:Bounds x="540" y="240" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="581" y="216.5" width="58" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_di" bpmnElement="Start">
+        <dc:Bounds x="-48" y="247" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Screening_di" bpmnElement="Screening">
+        <dc:Bounds x="270" y="222" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_di" bpmnElement="End">
+        <dc:Bounds x="682" y="247" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="671" y="283" width="58" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Tax_di" bpmnElement="Tax">
+        <dc:Bounds x="270" y="370" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="-12" y="265" />
+        <di:waypoint x="120" y="265" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="145" y="240" />
+        <di:waypoint x="145" y="122.5" />
+        <di:waypoint x="270" y="123" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="145" y="290" />
+        <di:waypoint x="145" y="413" />
+        <di:waypoint x="270" y="413" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="430" y="123" />
+        <di:waypoint x="565" y="123" />
+        <di:waypoint x="565" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="430" y="413" />
+        <di:waypoint x="565" y="413" />
+        <di:waypoint x="565" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11tgevd_di" bpmnElement="Flow_11tgevd">
+        <di:waypoint x="430" y="265" />
+        <di:waypoint x="540" y="265" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1o2xxw5_di" bpmnElement="Flow_1o2xxw5">
+        <di:waypoint x="170" y="265" />
+        <di:waypoint x="270" y="265" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0k86g1i_di" bpmnElement="Flow_0k86g1i">
+        <di:waypoint x="590" y="265" />
+        <di:waypoint x="682" y="265" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

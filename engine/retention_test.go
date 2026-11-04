@@ -7,8 +7,8 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/nicolas-vp/go-bpm/engine"
-	"github.com/nicolas-vp/go-bpm/internal/pgtest"
+	"github.com/nicolas-vp/go-bpm-bank/engine"
+	"github.com/nicolas-vp/go-bpm-bank/internal/pgtest"
 )
 
 // TestRetention - удаляются завершённые и отменённые корни старше срока вместе с дочерними экземплярами и их данными;

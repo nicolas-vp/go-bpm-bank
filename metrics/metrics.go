@@ -16,8 +16,8 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/nicolas-vp/go-bpm/engine"
-	"github.com/nicolas-vp/go-bpm/queue"
+	"github.com/nicolas-vp/go-bpm-bank/engine"
+	"github.com/nicolas-vp/go-bpm-bank/queue"
 )
 
 const (

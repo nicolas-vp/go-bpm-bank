@@ -1,8 +1,7 @@
-/bin
-/.idea
-/.vscode
-.DS_Store
-/go.work
-/go.work.sum
-*.out
+/bin/
+/.run/
 .env
+__pycache__/
+*.pyc
+/.idea/
+/.vscode/

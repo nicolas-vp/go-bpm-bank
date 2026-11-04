@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" id="Definitions_Routing" name="Учебная маршрутизация" namespace="https://github.com/nicolas-vp/go-bpm-bank">
+<decision id="OnboardingRoute" name="Маршрут заявления — учебные правила v1">
+<decisionTable id="RoutingTable" hitPolicy="FIRST">
+<input id="DocumentInput" label="Документ"><inputExpression id="DocumentExpr" typeRef="string"><text>documentStatus</text></inputExpression></input>
+<input id="ScreeningInput" label="Проверочные списки"><inputExpression id="ScreeningExpr" typeRef="string"><text>screeningStatus</text></inputExpression></input>
+<input id="TaxInput" label="Налоговые сведения"><inputExpression id="TaxExpr" typeRef="string"><text>taxStatus</text></inputExpression></input>
+<output id="RouteOutput" name="route" label="Следующий шаг" typeRef="string"/>
+<annotation id="RoutingNote" name="Примечание"/>
+<rule id="MissingDocument"><inputEntry id="MissingDocument_in0"><text>"INCOMPLETE"</text></inputEntry><inputEntry id="MissingDocument_in1"><text>-</text></inputEntry><inputEntry id="MissingDocument_in2"><text>-</text></inputEntry><outputEntry id="MissingDocument_out"><text>"REQUEST_INFO"</text></outputEntry><annotationEntry><text></text></annotationEntry></rule>
+<rule id="DocumentReview"><inputEntry id="DocumentReview_in0"><text>"REVIEW"</text></inputEntry><inputEntry id="DocumentReview_in1"><text>-</text></inputEntry><inputEntry id="DocumentReview_in2"><text>-</text></inputEntry><outputEntry id="DocumentReview_out"><text>"REVIEW"</text></outputEntry><annotationEntry><text></text></annotationEntry></rule>
+<rule id="ScreeningReview"><description>PEP — публичное должностное лицо (ПДЛ).</description><inputEntry id="ScreeningReview_in0"><text>-</text></inputEntry><inputEntry id="ScreeningReview_in1"><text>"MATCH","PEP"</text></inputEntry><inputEntry id="ScreeningReview_in2"><text>-</text></inputEntry><outputEntry id="ScreeningReview_out"><text>"REVIEW"</text></outputEntry><annotationEntry><text>PEP — публичное должностное лицо (ПДЛ).</text></annotationEntry></rule>
+<rule id="TaxReview"><inputEntry id="TaxReview_in0"><text>-</text></inputEntry><inputEntry id="TaxReview_in1"><text>-</text></inputEntry><inputEntry id="TaxReview_in2"><text>"REVIEW"</text></inputEntry><outputEntry id="TaxReview_out"><text>"REVIEW"</text></outputEntry><annotationEntry><text></text></annotationEntry></rule>
+<rule id="Clear"><inputEntry id="Clear_in0"><text>"VALID"</text></inputEntry><inputEntry id="Clear_in1"><text>"CLEAR"</text></inputEntry><inputEntry id="Clear_in2"><text>"VALID"</text></inputEntry><outputEntry id="Clear_out"><text>"CONTINUE"</text></outputEntry><annotationEntry><text></text></annotationEntry></rule>
+<rule id="Unknown"><inputEntry id="Unknown_in0"><text>-</text></inputEntry><inputEntry id="Unknown_in1"><text>-</text></inputEntry><inputEntry id="Unknown_in2"><text>-</text></inputEntry><outputEntry id="Unknown_out"><text>"REVIEW"</text></outputEntry><annotationEntry><text></text></annotationEntry></rule>
+</decisionTable></decision></definitions>

@@ -9,10 +9,10 @@ import (
 	"testing"
 	"text/template"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	"github.com/nicolas-vp/go-bpm/internal/generator/models/dmn"
-	pgparser "github.com/nicolas-vp/go-bpm/internal/generator/parser"
-	"github.com/nicolas-vp/go-bpm/internal/generator/templates"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/models/dmn"
+	pgparser "github.com/nicolas-vp/go-bpm-bank/internal/generator/parser"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/templates"
 )
 
 func TestCompileUnaryTests(t *testing.T) {

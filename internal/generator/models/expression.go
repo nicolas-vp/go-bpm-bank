@@ -3,7 +3,7 @@ package model
 import (
 	"time"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
 )
 
 type Expression struct {

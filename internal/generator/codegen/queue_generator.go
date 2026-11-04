@@ -10,11 +10,11 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	model "github.com/nicolas-vp/go-bpm/internal/generator/models"
-	"github.com/nicolas-vp/go-bpm/internal/generator/models/bpmn"
-	"github.com/nicolas-vp/go-bpm/internal/generator/templates"
-	"github.com/nicolas-vp/go-bpm/internal/generator/utils"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	model "github.com/nicolas-vp/go-bpm-bank/internal/generator/models"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/models/bpmn"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/templates"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/utils"
 )
 
 const (

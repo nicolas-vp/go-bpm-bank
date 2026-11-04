@@ -21,7 +21,7 @@
       options.headers['Content-Type'] = 'application/json';
       options.body = JSON.stringify(body);
     }
-    var resp = await fetch('/api/v1' + path, options);
+    var resp = await fetch(path.indexOf('/bank/') === 0 ? path : '/api/v1' + path, options);
     if (resp.status === 204) {
       return null;
     }
@@ -103,6 +103,7 @@
       select.append(el('option', { value: '' }, 'все'));
     }
     processes.forEach(function (process) {
+      if (select.id === 'start-process' && process.id !== 'RetailAccountOpening') return;
       select.append(el('option', { value: process.id }, process.name ? process.name + ' (' + process.id + ')' : process.id));
     });
     if (current) {
@@ -187,7 +188,7 @@
         el('td', { className: 'row-actions' }, [
           el('button', { className: 'button-quiet', type: 'button', onclick: function () { showDiagram(process).catch(showError); } }, 'Схема'),
           el('button', { className: 'button-quiet', type: 'button', onclick: function () { go('heatmap', { process: process.id }); } }, 'Термокарта'),
-          el('button', { className: 'button', type: 'button', onclick: function () { go('start', { process: process.id }); } }, 'Запустить'),
+          process.id === 'RetailAccountOpening' ? el('button', { className: 'button', type: 'button', onclick: function () { go('start', { process: process.id }); } }, 'Запустить') : null,
         ]),
       ]));
     });
@@ -379,15 +380,14 @@
   var startProcess = document.getElementById('start-process');
   var startKey = document.getElementById('start-key');
   var startResult = document.getElementById('start-result');
-  var startVars = varsEditor(document.getElementById('start-vars'));
-  startVars.reset();
+  var startScenario = document.getElementById('start-scenario');
 
   async function showStart(params) {
     if (processes.length === 0) {
       await loadProcesses();
     }
     if (params.get('process')) {
-      startProcess.value = params.get('process');
+      startProcess.value = 'RetailAccountOpening';
     }
   }
 
@@ -397,17 +397,17 @@
     startResult.hidden = true;
     var body;
     try {
-      body = { variables: startVars.value() };
+      body = { applicationId: startKey.value.trim() || crypto.randomUUID(), scenario: startScenario.value };
     } catch (err) {
       showError(err);
       return;
     }
     if (startKey.value.trim()) {
-      body.businessKey = startKey.value.trim();
+      body.applicationId = startKey.value.trim();
     }
     var processId = startProcess.value;
     try {
-      var data = await api('POST', '/processes/' + encodeURIComponent(processId) + '/instances', body);
+      var data = await api('POST', '/bank/api/applications', body);
       startResult.replaceChildren(
         el('div', {}, ['Запущен экземпляр процесса ', el('b', {}, processTitle(processId)), ': ', el('code', {}, data.id)]),
         el('div', { className: 'notice-links' }, [

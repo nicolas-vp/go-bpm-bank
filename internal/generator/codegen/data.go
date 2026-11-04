@@ -5,8 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/nicolas-vp/go-bpm/internal/generator/templates"
-	"github.com/nicolas-vp/go-bpm/internal/generator/utils"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/templates"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/utils"
 )
 
 const (

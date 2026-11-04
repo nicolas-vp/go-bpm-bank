@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"text/template"
 
-	model "github.com/nicolas-vp/go-bpm/internal/generator/models"
-	"github.com/nicolas-vp/go-bpm/internal/generator/templates"
-	"github.com/nicolas-vp/go-bpm/internal/generator/utils"
+	model "github.com/nicolas-vp/go-bpm-bank/internal/generator/models"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/templates"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/utils"
 )
 
 // handlersDir - пакет обработчиков jobType в корне вывода: jobType может быть в нескольких процессах,

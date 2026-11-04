@@ -149,6 +149,7 @@
     }
     // вписываем после панели: она отнимает ширину у холста
     viewer.get('canvas').zoom('fit-viewport', 'auto');
+    viewer.get('canvas').zoom(viewer.get('canvas').zoom() * 0.9, 'auto');
   }
 
   var eventNames = { completed: 'выполнен', activated: 'запущен', terminated: 'прерван' };

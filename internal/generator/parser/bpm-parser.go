@@ -3,7 +3,7 @@ package parser
 import (
 	"encoding/xml"
 
-	"github.com/nicolas-vp/go-bpm/internal/generator/models/bpmn"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/models/bpmn"
 )
 
 func ParseBpm(source []byte) (*bpmn.Definitions, error) {

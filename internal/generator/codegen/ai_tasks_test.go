@@ -5,9 +5,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/nicolas-vp/go-bpm/bpm"
-	model "github.com/nicolas-vp/go-bpm/internal/generator/models"
-	"github.com/nicolas-vp/go-bpm/internal/generator/models/bpmn"
+	"github.com/nicolas-vp/go-bpm-bank/bpm"
+	model "github.com/nicolas-vp/go-bpm-bank/internal/generator/models"
+	"github.com/nicolas-vp/go-bpm-bank/internal/generator/models/bpmn"
 )
 
 // aiDefinitions - процесс с AI task, как её пишет моделер: gobpm:taskDefinition type="ai" и метка gobpm:aiTask

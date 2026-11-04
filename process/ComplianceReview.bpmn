@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:gobpm="https://github.com/nicolas-vp/go-bpm/schema/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_ComplianceReview" targetNamespace="https://github.com/nicolas-vp/go-bpm-bank">
+  <bpmn:process id="ComplianceReview" name="02b · Ручное рассмотрение" isExecutable="true">
+    <bpmn:startEvent id="Start" name="" />
+    <bpmn:task id="ResetReview" name="Начать новое рассмотрение" />
+    <bpmn:userTask id="ReviewClient" name="Рассмотреть результаты проверок">
+      <bpmn:extensionElements>
+        <gobpm:assignmentDefinition candidateGroups="compliance" />
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Special" name="Требуется второй сотрудник?" default="Flow_5" />
+    <bpmn:userTask id="AuthorizeClient" name="Рассмотреть руководителю">
+      <bpmn:extensionElements>
+        <gobpm:assignmentDefinition candidateGroups="supervisors" />
+      </bpmn:extensionElements>
+    </bpmn:userTask>
+    <bpmn:task id="NormalizeReview" name="Зафиксировать решение" />
+    <bpmn:endEvent id="End" name="Решение принято" />
+    <bpmn:boundaryEvent id="ReviewDeadline" name="Эскалация" attachedToRef="ReviewClient">
+      <bpmn:timerEventDefinition>
+        <bpmn:timeDuration>PT2M</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_1" name="" sourceRef="Start" targetRef="ResetReview" />
+    <bpmn:sequenceFlow id="Flow_2" name="" sourceRef="ResetReview" targetRef="ReviewClient" />
+    <bpmn:sequenceFlow id="Flow_3" name="" sourceRef="ReviewClient" targetRef="Special" />
+    <bpmn:sequenceFlow id="Flow_4" name="Да" sourceRef="Special" targetRef="AuthorizeClient">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">screeningStatus == "PEP" and reviewDecision == "CONTINUE"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_5" name="Нет" sourceRef="Special" targetRef="NormalizeReview" />
+    <bpmn:sequenceFlow id="Flow_6" name="" sourceRef="AuthorizeClient" targetRef="NormalizeReview" />
+    <bpmn:sequenceFlow id="Flow_7" name="" sourceRef="NormalizeReview" targetRef="End" />
+    <bpmn:sequenceFlow id="Flow_8" name="" sourceRef="ReviewDeadline" targetRef="AuthorizeClient" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_ComplianceReview">
+    <bpmndi:BPMNPlane id="Plane_ComplianceReview" bpmnElement="ComplianceReview">
+      <bpmndi:BPMNShape id="ResetReview_di" bpmnElement="ResetReview">
+        <dc:Bounds x="120" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReviewClient_di" bpmnElement="ReviewClient">
+        <dc:Bounds x="340" y="150" width="160" height="85" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AuthorizeClient_di" bpmnElement="AuthorizeClient">
+        <dc:Bounds x="700" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="NormalizeReview_di" bpmnElement="NormalizeReview">
+        <dc:Bounds x="940" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_di" bpmnElement="Start">
+        <dc:Bounds x="30" y="175" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Special_di" bpmnElement="Special" isMarkerVisible="true">
+        <dc:Bounds x="575" y="168" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="555" y="218" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_di" bpmnElement="End">
+        <dc:Bounds x="1180" y="175" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1174" y="222" width="47" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReviewDeadline_di" bpmnElement="ReviewDeadline">
+        <dc:Bounds x="460" y="218" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="412" y="254" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="66" y="193" />
+        <di:waypoint x="120" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="280" y="192.5" />
+        <di:waypoint x="340" y="192.5" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="500" y="193" />
+        <di:waypoint x="575" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="625" y="193" />
+        <di:waypoint x="700" y="193" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="652" y="170" width="14" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="600" y="168" />
+        <di:waypoint x="600" y="100" />
+        <di:waypoint x="1020" y="100" />
+        <di:waypoint x="1020" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="800" y="75" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="860" y="192.5" />
+        <di:waypoint x="940" y="192.5" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="1100" y="193" />
+        <di:waypoint x="1180" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="478" y="254" />
+        <di:waypoint x="478" y="310" />
+        <di:waypoint x="780" y="310" />
+        <di:waypoint x="780" y="235" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

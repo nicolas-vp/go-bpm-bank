@@ -1,0 +1,138 @@
+{
+  "viewport": [
+    1600,
+    1000
+  ],
+  "homeViewport": [
+    1600,
+    1200
+  ],
+  "bankURL": "http://127.0.0.1:8090",
+  "cases": {
+    "happy": {
+      "scenario": "happy",
+      "applicationId": "54d724bb-6668-4a8f-ac64-c95ffc6cf7b2",
+      "instanceId": "01a1a87d-00b6-7872-bfbb-2c9b8e87a09f",
+      "outcome": "OPENED",
+      "accountOpened": true,
+      "historyRecords": 105,
+      "tasks": [
+        "IdentifyApplicant",
+        "ConfirmContract"
+      ]
+    },
+    "incomplete": {
+      "scenario": "incomplete",
+      "applicationId": "4e08e5bf-8385-4482-a4f2-5072c1a8e47e",
+      "instanceId": "01a1a87d-02a8-755d-a975-6c7ea5962b94",
+      "outcome": "OPENED",
+      "accountOpened": true,
+      "historyRecords": 143,
+      "tasks": [
+        "IdentifyApplicant",
+        "IdentifyApplicant",
+        "ConfirmContract"
+      ]
+    },
+    "screening_match": {
+      "scenario": "screening_match",
+      "applicationId": "91776b7f-c9a4-4c99-b091-91c1a02e0d1a",
+      "instanceId": "01a1a87d-0537-7491-9d54-e9c0d91a2a0c",
+      "outcome": "OPENED",
+      "accountOpened": true,
+      "historyRecords": 122,
+      "tasks": [
+        "IdentifyApplicant",
+        "ReviewClient",
+        "ConfirmContract"
+      ]
+    },
+    "pep": {
+      "scenario": "pep",
+      "applicationId": "e5d834c0-f9fb-41cd-a3cf-1551d051a9d0",
+      "instanceId": "01a1a87d-072b-7e36-8f93-1cd393006c97",
+      "outcome": "OPENED",
+      "accountOpened": true,
+      "historyRecords": 125,
+      "tasks": [
+        "IdentifyApplicant",
+        "ReviewClient",
+        "AuthorizeClient",
+        "ConfirmContract"
+      ]
+    },
+    "tax_refusal": {
+      "scenario": "tax_refusal",
+      "applicationId": "8b2bf385-a4af-466b-9723-2beb68eed49c",
+      "instanceId": "01a1a87d-09b8-70bb-9337-1e58ac119e09",
+      "outcome": "DECLINED_WITH_BASIS",
+      "accountOpened": false,
+      "historyRecords": 68,
+      "tasks": [
+        "IdentifyApplicant",
+        "ReviewClient"
+      ]
+    },
+    "withdrawn": {
+      "scenario": "withdrawn",
+      "applicationId": "95b738e3-f1c5-47f0-b043-f439c0e2647f",
+      "instanceId": "01a1a87d-0b09-7ea9-b70a-05a2978ecf17",
+      "outcome": "WITHDRAWN",
+      "accountOpened": false,
+      "historyRecords": 67,
+      "tasks": [
+        "IdentifyApplicant",
+        "ConfirmContract"
+      ]
+    },
+    "lost_response": {
+      "scenario": "lost_response",
+      "applicationId": "e9c3892f-2b4c-49b1-b241-250c68a8b115",
+      "instanceId": "01a1a87d-0c58-7836-9b28-ae3d327f6b5b",
+      "outcome": "OPENED",
+      "accountOpened": true,
+      "historyRecords": 105,
+      "tasks": [
+        "IdentifyApplicant",
+        "ConfirmContract"
+      ]
+    },
+    "core_pending": {
+      "scenario": "core_pending",
+      "applicationId": "ece6c44d-7544-4f71-9aa0-5e6ce0736c36",
+      "instanceId": "01a1a87d-1143-7d5c-bc09-1c2ba48281f5",
+      "outcome": "OPENED",
+      "accountOpened": true,
+      "historyRecords": 113,
+      "tasks": [
+        "IdentifyApplicant",
+        "ConfirmContract"
+      ]
+    },
+    "core_reject": {
+      "scenario": "core_reject",
+      "applicationId": "8a773dc8-be42-4e4b-8702-702bd30b6eb9",
+      "instanceId": "01a1a87d-1886-7146-9a7d-a8c827e3f617",
+      "outcome": "REFERRED_CORE",
+      "accountOpened": false,
+      "historyRecords": 88,
+      "tasks": [
+        "IdentifyApplicant",
+        "ConfirmContract"
+      ]
+    },
+    "tax_report_retry": {
+      "scenario": "tax_report_retry",
+      "applicationId": "18068ea8-5e61-4342-87c7-f4004a2462d5",
+      "instanceId": "01a1a87d-1a6c-7f08-90d0-bb151cd4b717",
+      "outcome": "OPENED",
+      "accountOpened": true,
+      "historyRecords": 105,
+      "tasks": [
+        "IdentifyApplicant",
+        "ConfirmContract"
+      ]
+    }
+  },
+  "taskApplication": "535e0b2e-81ab-49a2-9ab2-e367978891b0"
+}

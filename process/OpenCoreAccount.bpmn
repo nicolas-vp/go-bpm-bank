@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:gobpm="https://github.com/nicolas-vp/go-bpm/schema/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_OpenCoreAccount" targetNamespace="https://github.com/nicolas-vp/go-bpm-bank">
+  <bpmn:process id="OpenCoreAccount" name="04 · Открытие в мок-АБС" isExecutable="true">
+    <bpmn:startEvent id="Start" name="" />
+    <bpmn:serviceTask id="Customer" name="Найти / создать клиента">
+      <bpmn:extensionElements>
+        <gobpm:taskDefinition type="resolveCustomer" retries="6" />
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Submit" name="Отправить запрос на открытие счёта">
+      <bpmn:extensionElements>
+        <gobpm:taskDefinition type="submitOpening" retries="6" />
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Poll" name="Сверить результат в АБС">
+      <bpmn:extensionElements>
+        <gobpm:taskDefinition type="pollOpening" retries="6" />
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Status" name="Состояние операции" default="Flow_8" />
+    <bpmn:intermediateCatchEvent id="Wait" name="Повторить через секунду">
+      <bpmn:timerEventDefinition>
+        <bpmn:timeDuration>PT1S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:task id="ConfirmOpened" name="Подтвердить регистрацию" />
+    <bpmn:endEvent id="End" name="Счёт открыт" />
+    <bpmn:task id="ReferCore" name="Направить на ручную проверку" />
+    <bpmn:endEvent id="Referred" name="Требуется ручная проверка" />
+    <bpmn:sequenceFlow id="Flow_1" name="" sourceRef="Start" targetRef="Customer" />
+    <bpmn:sequenceFlow id="Flow_2" name="" sourceRef="Customer" targetRef="Submit" />
+    <bpmn:sequenceFlow id="Flow_3" name="" sourceRef="Submit" targetRef="Poll" />
+    <bpmn:sequenceFlow id="Flow_4" name="" sourceRef="Poll" targetRef="Status" />
+    <bpmn:sequenceFlow id="Flow_5" name="Ожидание" sourceRef="Status" targetRef="Wait">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">coreStatus == "PENDING"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_6" name="" sourceRef="Wait" targetRef="Poll" />
+    <bpmn:sequenceFlow id="Flow_7" name="Открыт" sourceRef="Status" targetRef="ConfirmOpened">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">coreStatus == "OPENED"</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_8" name="Отклонено АБС" sourceRef="Status" targetRef="ReferCore" />
+    <bpmn:sequenceFlow id="Flow_9" name="" sourceRef="ConfirmOpened" targetRef="End" />
+    <bpmn:sequenceFlow id="Flow_10" name="" sourceRef="ReferCore" targetRef="Referred" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_OpenCoreAccount">
+    <bpmndi:BPMNPlane id="Plane_OpenCoreAccount" bpmnElement="OpenCoreAccount">
+      <bpmndi:BPMNShape id="Customer_di" bpmnElement="Customer">
+        <dc:Bounds x="120" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_di" bpmnElement="Start">
+        <dc:Bounds x="42" y="175" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Submit_di" bpmnElement="Submit">
+        <dc:Bounds x="320" y="150" width="160" height="85" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Poll_di" bpmnElement="Poll">
+        <dc:Bounds x="530" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ConfirmOpened_di" bpmnElement="ConfirmOpened">
+        <dc:Bounds x="900" y="150" width="160" height="85" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Status_di" bpmnElement="Status" isMarkerVisible="true">
+        <dc:Bounds x="760" y="168" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="757" y="130.5" width="55" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReferCore_di" bpmnElement="ReferCore">
+        <dc:Bounds x="900" y="277" width="160" height="85" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_di" bpmnElement="End">
+        <dc:Bounds x="1130" y="175" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1117" y="211" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Referred_di" bpmnElement="Referred">
+        <dc:Bounds x="1130" y="302" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1105" y="338" width="86" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Wait_di" bpmnElement="Wait">
+        <dc:Bounds x="592" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="496" y="286.5" width="86" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="78" y="193" />
+        <di:waypoint x="120" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="280" y="193" />
+        <di:waypoint x="320" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="480" y="193" />
+        <di:waypoint x="530" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="690" y="193" />
+        <di:waypoint x="760" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="776" y="209" />
+        <di:waypoint x="720" y="300" />
+        <di:waypoint x="628" y="300" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="647" y="275" width="53" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="610" y="282" />
+        <di:waypoint x="610" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="810" y="193" />
+        <di:waypoint x="900" y="193" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="833" y="169" width="38" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="785" y="218" />
+        <di:waypoint x="785" y="320" />
+        <di:waypoint x="900" y="320" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="799" y="293" width="82" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="1060" y="193" />
+        <di:waypoint x="1130" y="193" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="1060" y="320" />
+        <di:waypoint x="1130" y="320" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

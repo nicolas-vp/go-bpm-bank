@@ -8,7 +8,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/nicolas-vp/go-bpm/migrations"
+	"github.com/nicolas-vp/go-bpm-bank/migrations"
 )
 
 // DSNEnv - переменная окружения с DSN тестовой базы; база очищается тестами
